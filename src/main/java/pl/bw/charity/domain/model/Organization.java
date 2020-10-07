@@ -1,9 +1,8 @@
 package pl.bw.charity.domain.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Organization {
@@ -14,6 +13,10 @@ public class Organization {
 
     private String name;
     private String description;
+
+    @OneToMany
+    @JoinColumn(name = "organization_id")
+    Set<Donation> donations = new HashSet<>();
 
     public Organization() {
     }
@@ -45,6 +48,14 @@ public class Organization {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<Donation> getDonations() {
+        return donations;
+    }
+
+    public void setDonations(Set<Donation> donations) {
+        this.donations = donations;
     }
 
     @Override
