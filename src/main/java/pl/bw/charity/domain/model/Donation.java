@@ -5,6 +5,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Donation {
@@ -28,6 +30,10 @@ public class Donation {
 
     @ManyToOne
     private Organization organization;
+
+    @OneToMany
+    @JoinColumn(name = "donation_id")
+    Set<DonationDetails> donationDetails = new HashSet<>();
 
     public Donation() {
     }
