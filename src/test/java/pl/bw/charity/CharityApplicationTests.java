@@ -1,4 +1,4 @@
-package pl.coderslab.charity;
+package pl.bw.charity;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
