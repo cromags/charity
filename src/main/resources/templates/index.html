@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pl" xmlns:th="http://www.thymeleaf.org" >
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style.css"/>
     <title>Charity</title>
 </head>
 <body>
@@ -16,13 +16,15 @@
         <div class="stats--item">
             <em>10</em>
             <h3>Oddanych worków</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius est beatae, quod accusamus illum tempora!</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius est beatae, quod accusamus illum
+                tempora!</p>
         </div>
 
         <div class="stats--item">
             <em>5</em>
             <h3>Przekazanych darów</h3>
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam magnam, sint nihil cupiditate quas quam.</p>
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam magnam, sint nihil cupiditate quas
+                quam.</p>
         </div>
 
     </div>
@@ -60,10 +62,11 @@
 <section id="about-us" class="about-us">
     <div class="about-us--text">
         <h2>O nas</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas vitae animi rem pariatur incidunt libero optio esse quisquam illo omnis.</p>
-        <img src="images/signature.svg" class="about-us--text-signature" alt="Signature" />
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas vitae animi rem pariatur incidunt libero
+            optio esse quisquam illo omnis.</p>
+        <img src="images/signature.svg" class="about-us--text-signature" alt="Signature"/>
     </div>
-    <div class="about-us--image"><img src="images/about-us.jpg" alt="People in circle" /></div>
+    <div class="about-us--image"><img src="images/about-us.jpg" alt="People in circle"/></div>
 </section>
 
 <section id="help" class="help">
@@ -75,29 +78,26 @@
             Możesz sprawdzić czym się zajmują.</p>
 
         <ul class="help--slides-items">
-            <li>
-                <div class="col">
-                    <div class="title">Fundacja "Dbam o Zdrowie"</div>
-                    <div class="subtitle">Cel i misja: Pomoc dzieciom z ubogich rodzin.</div>
-                </div>
-
-                <div class="col">
-                    <div class="title">Fundacja "A kogo"</div>
-                    <div class="subtitle">Cel i misja: Pomoc wybudzaniu dzieci ze śpiączki.</div>
-                </div>
-            </li>
-
-            <li>
-                <div class="col">
-                    <div class="title">Fundacja “Dla dzieci"</div>
-                    <div class="subtitle">Cel i misja: Pomoc osobom znajdującym się w trudnej sytuacji życiowej.</div>
-                </div>
-                <div class="col">
-                    <div class="title">Fundacja “Bez domu”</div>
-                    <div class="subtitle">Cel i misja: Pomoc dla osób nie posiadających miejsca zamieszkania</div>
-                </div>
-
-            </li>
+            <th:block th:each="org, status : ${orgs}">
+                <th:block th:if="${status.odd}">
+                    <li>
+                        <div class="col">
+                            <div class="title" th:text="${org.name}">Fundacja "Dbam o Zdrowie"</div>
+                            <div class="subtitle" th:text="${org.description}">Cel i misja:
+                                Pomoc dzieciom z ubogich rodzin.
+                            </div>
+                        </div>
+                </th:block>
+                <th:block th:unless="${status.odd}">
+                    <div class="col">
+                        <div class="title" th:text="${org.name}">Fundacja "A kogo"</div>
+                        <div class="subtitle" th:text="${org.description}">Cel i misja: Pomoc
+                            w wybudzaniu dzieci ze śpiączki.
+                        </div>
+                    </div>
+                    </li>
+                </th:block>
+            </th:block>
 
         </ul>
 
