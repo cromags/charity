@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div>
+
+    <form th:action="@{/summary}" method="post">
+
+        <div>
+            <label>Kod pocztowy:</label>
+            <div>
+                <input type="text" th:field="*{donation.zipCode}" />
+            </div>
+        </div>
+
+        <div>
+            <label>Miasto:</label>
+            <div>
+                <input type="text" th:field="*{donation.city}" />
+            </div>
+        </div>
+
+        <div>
+            <label>Adres:</label>
+            <div>
+                <input type="text" th:field="*{donation.address}" />
+            </div>
+        </div>
+
+        <div>
+            <label>Tel:</label>
+            <div>
+                <input type="text" th:field="*{donation.tel}" />
+            </div>
+        </div>
+
+        <div>
+            <button type="submit">Dalej</button>
+            <button onclick="location.href='/index'" type="button">
+                Anuluj</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

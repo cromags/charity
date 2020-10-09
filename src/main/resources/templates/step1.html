@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div>
+
+    <form th:action="@{/step2}" method="post">
+
+        <div>
+            <label>Dobra:</label>
+            <div>
+                <select th:field="*{dd.good}"  >
+                    <option th:each="good : ${goods}" th:value="${good.id}" th:text="${good.name}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <label>Ilość:</label>
+            <div>
+                <input type="number" th:field="*{dd.quantity}" />
+            </div>
+        </div>
+
+
+
+
+        <div>
+            <button type="button">Dodaj kolejny</button>
+            <button type="submit">Dalej</button>
+            <button onclick="location.href='/index'" type="button">
+                Anuluj</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

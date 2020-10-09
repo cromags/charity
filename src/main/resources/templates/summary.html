@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div>
+
+    <form th:action="@{/thankyou}" method="post">
+
+        <p th:text="${good.name}"></p>
+        <p th:text="${quantity}"></p>
+        <p th:text="${donation.address}"></p>
+        <p th:text="${organization.name}"></p>
+
+
+
+
+
+    </form>
+</div>
+</body>
+</html>

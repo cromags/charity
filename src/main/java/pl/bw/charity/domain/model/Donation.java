@@ -121,6 +121,14 @@ public class Donation {
         this.organization = organization;
     }
 
+    public Set<DonationDetails> getDonationDetails() {
+        return donationDetails;
+    }
+
+    public void setDonationDetails(Set<DonationDetails> donationDetails) {
+        this.donationDetails = donationDetails;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
