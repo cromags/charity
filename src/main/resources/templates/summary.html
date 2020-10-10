@@ -8,14 +8,12 @@
 
     <form th:action="@{/thankyou}" method="post">
 
-        <p th:text="${good.name}"></p>
-        <p th:text="${quantity}"></p>
+        <p th:text="${donation.zipCode}"></p>
+        <p th:text="${donation.city}"></p>
         <p th:text="${donation.address}"></p>
+        <p th:text="${donation.tel}"></p>
+
         <p th:text="${organization.name}"></p>
-
-
-
-
 
     </form>
 </div>

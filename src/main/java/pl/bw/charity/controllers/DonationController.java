@@ -3,6 +3,7 @@ package pl.bw.charity.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import pl.bw.charity.domain.model.Donation;
 import pl.bw.charity.domain.model.DonationDetails;
 import pl.bw.charity.domain.model.Good;
@@ -12,6 +13,8 @@ import pl.bw.charity.service.OrganizationService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class DonationController {
@@ -32,16 +35,31 @@ public class DonationController {
         return "step1";
     }
 
-    @RequestMapping(value = "/step2")
-    public String step2(Model model,
-                        DonationDetails donationdetails,
-                        HttpServletRequest request) {
+    @RequestMapping(value = "/step2", params = {"again"})
+    public ModelAndView step2Back(HttpServletRequest request,
+                            DonationDetails donationDetails){
 
         HttpSession session = request.getSession();
-        Good good = donationdetails.getGood();
-        Integer quantity = donationdetails.getQuantity();
-        session.setAttribute("good", good);
-        session.setAttribute("quantity", quantity);
+        if (session.getAttribute("detailsList") == null) {
+            session.setAttribute("detailsList", new ArrayList<DonationDetails>());
+        }
+        List<DonationDetails> detailsList = (List<DonationDetails>) session.getAttribute("detailsList");
+        detailsList.add(donationDetails);
+
+        return new ModelAndView("redirect:/step1");
+    }
+
+    @RequestMapping(value = "/step2", params = {"next"})
+    public String step2Forward(Model model,
+                               HttpServletRequest request,
+                               DonationDetails donationDetails) {
+
+        HttpSession session = request.getSession();
+        if (session.getAttribute("detailsList") == null) {
+            session.setAttribute("detailsList", new ArrayList<DonationDetails>());
+        }
+        List<DonationDetails> detailsList = (List<DonationDetails>) session.getAttribute("detailsList");
+        detailsList.add(donationDetails);
 
         model.addAttribute("orgs", organizationService.findAll());
         model.addAttribute("donation", new Donation());
@@ -66,15 +84,11 @@ public class DonationController {
                           HttpServletRequest request) {
 
         HttpSession session = request.getSession();
-        Good good = (Good) session.getAttribute("good");
-        Integer quantity = (Integer) session.getAttribute("quantity");
         Organization organization = (Organization) session.getAttribute("organization");
-
-
         model.addAttribute("donation", donation);
-        model.addAttribute("good", good);
         model.addAttribute("organization", organization);
-        model.addAttribute("quantity", quantity);
+        List<DonationDetails> detailsList = (List<DonationDetails>) session.getAttribute("detailsList");
+        model.addAttribute("detailsList", detailsList);
 
 
         return "summary";
