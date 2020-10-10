@@ -6,26 +6,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import pl.bw.charity.domain.model.Donation;
 import pl.bw.charity.domain.model.DonationDetails;
-import pl.bw.charity.domain.model.Good;
 import pl.bw.charity.domain.model.Organization;
+import pl.bw.charity.domain.repository.DetailsRepository;
+import pl.bw.charity.domain.repository.DonationRepository;
 import pl.bw.charity.service.GoodService;
 import pl.bw.charity.service.OrganizationService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 public class DonationController {
 
     private final GoodService goodService;
     private final OrganizationService organizationService;
+    private final DonationRepository donationRepository;
+    private final DetailsRepository detailsRepository;
 
     public DonationController(GoodService goodService,
-                              OrganizationService organizationService) {
+                              OrganizationService organizationService,
+                              DonationRepository donationRepository,
+                              DetailsRepository detailsRepository) {
         this.goodService = goodService;
         this.organizationService = organizationService;
+        this.donationRepository = donationRepository;
+        this.detailsRepository = detailsRepository;
     }
 
     @RequestMapping(value = "/step1")
@@ -41,9 +48,9 @@ public class DonationController {
 
         HttpSession session = request.getSession();
         if (session.getAttribute("detailsList") == null) {
-            session.setAttribute("detailsList", new ArrayList<DonationDetails>());
+            session.setAttribute("detailsList", new HashSet<DonationDetails>());
         }
-        List<DonationDetails> detailsList = (List<DonationDetails>) session.getAttribute("detailsList");
+        Set<DonationDetails> detailsList = (Set<DonationDetails>) session.getAttribute("detailsList");
         detailsList.add(donationDetails);
 
         return new ModelAndView("redirect:/step1");
@@ -56,9 +63,9 @@ public class DonationController {
 
         HttpSession session = request.getSession();
         if (session.getAttribute("detailsList") == null) {
-            session.setAttribute("detailsList", new ArrayList<DonationDetails>());
+            session.setAttribute("detailsList", new HashSet<DonationDetails>());
         }
-        List<DonationDetails> detailsList = (List<DonationDetails>) session.getAttribute("detailsList");
+        Set<DonationDetails> detailsList = (Set<DonationDetails>) session.getAttribute("detailsList");
         detailsList.add(donationDetails);
 
         model.addAttribute("orgs", organizationService.findAll());
@@ -85,13 +92,39 @@ public class DonationController {
 
         HttpSession session = request.getSession();
         Organization organization = (Organization) session.getAttribute("organization");
+        Set<DonationDetails> detailsList = (Set<DonationDetails>) session.getAttribute("detailsList");
+        session.setAttribute("donation", donation);
+
         model.addAttribute("donation", donation);
         model.addAttribute("organization", organization);
-        List<DonationDetails> detailsList = (List<DonationDetails>) session.getAttribute("detailsList");
         model.addAttribute("detailsList", detailsList);
 
 
         return "summary";
+    }
+
+    @RequestMapping(value = "/thankyou")
+    public String tkankyou(HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        Organization organization = (Organization) session.getAttribute("organization");
+        Set<DonationDetails> detailsList = (Set<DonationDetails>) session.getAttribute("detailsList");
+        Donation donation = (Donation) session.getAttribute("donation");
+
+        donation.setOrganization(organization);
+        donationRepository.save(donation);
+
+        for (DonationDetails dd : detailsList){
+            dd.setDonation(donation);
+            detailsRepository.save(dd);
+        }
+
+        //clear session
+        if (session != null) {
+            session.invalidate();
+        }
+
+        return "thankyou";
     }
 
 
