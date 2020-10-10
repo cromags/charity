@@ -9,32 +9,55 @@
     <form th:action="@{/summary}" method="post">
 
         <div>
-            <label>Kod pocztowy:</label>
+            <label>Kod pocztowy</label>
             <div>
-                <input type="text" th:field="*{donation.zipCode}" />
+                <input type="text" required pattern="[0-9]{2}-[0-9]{3}" title="Prawidłowy format np. 01-124" th:field="*{donation.zipCode}" />
             </div>
         </div>
 
         <div>
-            <label>Miasto:</label>
+            <label>Miasto</label>
             <div>
-                <input type="text" th:field="*{donation.city}" />
+                <input type="text" required th:field="*{donation.city}" />
             </div>
         </div>
 
         <div>
-            <label>Adres:</label>
+            <label>Adres</label>
             <div>
-                <input type="text" th:field="*{donation.address}" />
+                <input type="text" required th:field="*{donation.address}" />
             </div>
         </div>
 
         <div>
-            <label>Tel:</label>
+            <label>Tel</label>
             <div>
-                <input type="text" th:field="*{donation.tel}" />
+                <input type="text" required th:field="*{donation.tel}" />
             </div>
         </div>
+
+        <div>
+            <label>Data</label>
+            <div>
+                <input type="date" required th:field="*{donation.pickUpDate}" />
+            </div>
+        </div>
+
+        <div>
+            <label>Godzina</label>
+            <div>
+                <input type="time" min="07:00" max="22:00" th:field="*{donation.pickUpTime}" />
+            </div>
+            </div>
+        </div>
+
+        <div>
+            <label>Uwagi dla kuriera</label>
+            <div>
+                <textarea th:field="*{donation.comments}" />
+            </div>
+        </div>
+
 
         <div>
             <button type="submit">Dalej</button>
