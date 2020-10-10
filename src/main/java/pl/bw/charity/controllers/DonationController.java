@@ -127,6 +127,17 @@ public class DonationController {
         return "thankyou";
     }
 
+    @RequestMapping(value = {"/step2", "/step3","/summary","/thankyou"}, params = {"cancel"})
+    public ModelAndView cancel(HttpServletRequest request){
+
+        HttpSession session = request.getSession();
+        if (session != null) {
+            session.invalidate();
+        }
+
+        return new ModelAndView("redirect:/step1");
+    }
+
 
 
 }
