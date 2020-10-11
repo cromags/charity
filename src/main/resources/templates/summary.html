@@ -2,25 +2,54 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org" >
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-<div>
 
+<div th:include="/fragments::headerAfterLog"></div>
+
+<div class="form--steps-container">
     <form th:action="@{/thankyou}" method="post">
 
-        <p th:text="${donation.zipCode}"></p>
-        <p th:text="${donation.city}"></p>
-        <p th:text="${donation.address}"></p>
-        <p th:text="${donation.tel}"></p>
+        <div data-step="5">
+            <h3>Podsumowanie Twojej darowizny</h3>
 
-        <p th:text="${organization.name}"></p>
+            <div class="summary">
+                <div class="form-section">
+                    <h4>Oddajesz <u th:text="${allBags}"></u> worków dla organizacji <u th:text="${organization.name}"></u></h4>
+                </div>
 
-        <div>
-            <button type="submit">Potwierdzam</button>
-            <button type="submit" name="cancel">Anuluj</button>
+                <div class="form-section form-section--columns">
+                    <div class="form-section--column">
+                        <h4><u>Adres odbioru:</u></h4>
+                        <p><b th:text="${donation.zipCode} +' ' +  ${donation.city}"></b></p>
+                        <p th:text="${donation.address}"></p>
+                        <p th:text="${donation.tel}"></p>
+                    </div>
+
+                    <div class="form-section--column">
+                        <h4><u>Termin odbioru:</u></h4>
+                        <p th:text="${donation.pickUpDate}"></p>
+                        <p th:text="${donation.pickUpTime}"></p>
+                        <p th:text="${donation.comments}"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group form-group--buttons">
+                <button type="submit" name="next" class="btn next-step">Potwierdzam</button>
+                <button type="submit" name="cancel" class="btn next-step">Anuluj</button>
+            </div>
         </div>
 
     </form>
 </div>
+
+
+
+<div th:include="/fragments::footer"></div>
+<script src="js/app.js"></script>
 </body>
 </html>

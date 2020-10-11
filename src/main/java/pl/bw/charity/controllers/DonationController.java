@@ -97,7 +97,13 @@ public class DonationController {
 
         model.addAttribute("donation", donation);
         model.addAttribute("organization", organization);
-        model.addAttribute("detailsList", detailsList);
+
+        int allBags = 0;
+        for(DonationDetails dd : detailsList){
+            allBags += dd.getQuantity();
+        }
+
+        model.addAttribute("allBags", allBags);
 
 
         return "summary";
