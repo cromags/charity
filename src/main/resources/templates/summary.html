@@ -18,8 +18,12 @@
 
             <div class="summary">
                 <div class="form-section">
-                    <h4>Oddajesz <u th:text="${allBags}"></u> worków dla organizacji <u th:text="${organization.name}"></u></h4>
+                    <h4>Oddajesz <span style="color:#f9c910; background-color: black " th:text="${allBags}"></span> worków dla organizacji <span style="color: #f9c910; background-color: black " th:text="${organization.name}"></span></h4>
                 </div>
+
+                <ul th:each="d: ${det}">
+                    <li th:text="${d.getKey() +' (' + d.getValue()+'w)'}"></li>
+                </ul>
 
                 <div class="form-section form-section--columns">
                     <div class="form-section--column">

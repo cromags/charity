@@ -14,7 +14,9 @@ import pl.bw.charity.service.OrganizationService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Controller
@@ -99,12 +101,14 @@ public class DonationController {
         model.addAttribute("organization", organization);
 
         int allBags = 0;
+        Map<String, Integer> det = new HashMap<>();
         for(DonationDetails dd : detailsList){
             allBags += dd.getQuantity();
+            det.put(dd.getGood().getName(), dd.getQuantity());
         }
 
         model.addAttribute("allBags", allBags);
-
+        model.addAttribute("det", det);
 
         return "summary";
     }
