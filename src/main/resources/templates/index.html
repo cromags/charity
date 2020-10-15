@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<html lang="pl" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-secutity" >
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -10,7 +10,8 @@
 </head>
 <body>
 
-<div th:include="/fragments::header"></div>
+<div th:include="/fragments::header" sec:authorize="!isAuthenticated()" ></div>
+<div th:include="/fragments::headerAfterLog" sec:authorize="isAuthenticated()" ></div>
 
 <section id="stats" class="stats">
     <div class="container container--85">

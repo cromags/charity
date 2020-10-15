@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl" xmlns:th="http://www.thymeleaf.org" >
+<html lang="pl" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-secutity" >
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -9,10 +9,10 @@
 <body>
 
 <div th:fragment="header">
-    <header class="header--main-page">
+    <header  sec:authorize="!isAuthenticated()" class="header--main-page">
         <nav class="container container--70">
             <ul class="nav--actions">
-                <li><a href="" class="btn btn--small btn--without-border">Zaloguj</a></li>
+                <li><a href="/login" class="btn btn--small btn--without-border">Zaloguj</a></li>
                 <li><a href="#" class="btn btn--small btn--highlighted">Załóż konto</a></li>
             </ul>
 
@@ -40,44 +40,17 @@
     <header class="header--form-page">
         <nav class="container container--70">
             <ul class="nav--actions">
-                <li class="logged-user">
-                    Witaj Agata
+                <li sec:authorize="isAuthenticated()" class="logged-user">
+                    Witaj <span sec:authentication="principal.username">Agata</span>
                     <ul class="dropdown">
                         <li><a href="#">Profil</a></li>
                         <li><a href="#">Moje zbiórki</a></li>
-                        <li><a href="#">Wyloguj</a></li>
+                        <li><a href="/logout">Wyloguj</a></li>
                     </ul>
                 </li>
             </ul>
 
         </nav>
-
-<!--        <div class="slogan container container&#45;&#45;90">-->
-<!--            <div class="slogan&#45;&#45;item">-->
-<!--                <h1>-->
-<!--                    Oddaj rzeczy, których już nie chcesz<br />-->
-<!--                    <span class="uppercase">potrzebującym</span>-->
-<!--                </h1>-->
-
-<!--                <div class="slogan&#45;&#45;steps">-->
-<!--                    <div class="slogan&#45;&#45;steps-title">Wystarczą 4 proste kroki:</div>-->
-<!--                    <ul class="slogan&#45;&#45;steps-boxes">-->
-<!--                        <li>-->
-<!--                            <div><em>1</em><span>Wybierz rzeczy</span></div>-->
-<!--                        </li>-->
-<!--                        <li>-->
-<!--                            <div><em>2</em><span>Spakuj je w worki</span></div>-->
-<!--                        </li>-->
-<!--                        <li>-->
-<!--                            <div><em>3</em><span>Wybierz fundację</span></div>-->
-<!--                        </li>-->
-<!--                        <li>-->
-<!--                            <div><em>4</em><span>Zamów kuriera</span></div>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
     </header>
 </div>
 

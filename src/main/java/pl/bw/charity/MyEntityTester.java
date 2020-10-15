@@ -30,32 +30,43 @@ public class MyEntityTester implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        System.out.println("elo 1");
 
-        Organization org1 = new Organization("Nadzieja Stowarzyszenie Osób Bezdomnych","Dom dla samotnych kobiet z dziećmi, rodzin");
-        Organization org2 = new Organization("Schronisko św. Brata Alberta","Pomoc dla bezdomnych mężczyzn.");
+        Organization[] orgs = new Organization[]{
+                new Organization("Nadzieja Stowarzyszenie Osób Bezdomnych","Dom dla samotnych kobiet z dziećmi, rodzin"),
+                new Organization("Schronisko św. Brata Alberta","Pomoc dla bezdomnych mężczyzn."),
+                new Organization("Dobry duszek","Fundacja niesie pomoc głodnym, biednym i osieroconym dzieciom."),
+                new Organization("Dzieci Afryki","Pomoc osieroconym dzieciom i ubogim rodzinom w Afryce.")
+        };
 
-        organizationRepository.save(org1);
-        organizationRepository.save(org2);
-
-        Donation d1 = new Donation("00-001",
-                "Warszawa",
-                "Marszałkowska 1",
-                "666-777-999",
-                LocalDate.of(2020,06,06),
-                LocalTime.of(12,15),
-                "na 15 minut przed proszę dzwonić",
-                org1
-                );
-        donationRepository.save(d1);
-
-        Good clothes = new Good("ubrania");
-        Good toys = new Good("zabawki");
-        goodRepository.save(clothes);
-        goodRepository.save(toys);
+        for (Organization o : orgs){
+            organizationRepository.save(o);
+        }
 
 
-        System.out.println("elo 2");
+
+//        Donation d1 = new Donation("00-001",
+//                "Warszawa",
+//                "Marszałkowska 1",
+//                "666-777-999",
+//                LocalDate.of(2020,06,06),
+//                LocalTime.of(12,15),
+//                "na 15 minut przed proszę dzwonić",
+//                org1
+//                );
+//        donationRepository.save(d1);
+
+        Good[] goods = new Good[]{
+          new Good("ubrania"),
+          new Good("zabawki"),
+          new Good("książki"),
+          new Good("inne")
+        };
+
+        for(Good g : goods){
+            goodRepository.save(g);
+        }
+
+        System.out.println("elo");
 
     }
 }

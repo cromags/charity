@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Controller
+@RequestMapping("/user")
 public class DonationController {
 
     private final GoodService goodService;
@@ -55,7 +56,7 @@ public class DonationController {
         Set<DonationDetails> detailsList = (Set<DonationDetails>) session.getAttribute("detailsList");
         detailsList.add(donationDetails);
 
-        return new ModelAndView("redirect:/step1");
+        return new ModelAndView("redirect:/user/step1");
     }
 
     @RequestMapping(value = "/step2", params = {"next"})
@@ -145,7 +146,7 @@ public class DonationController {
             session.invalidate();
         }
 
-        return new ModelAndView("redirect:/step1");
+        return new ModelAndView("redirect:/user/step1");
     }
 
 
