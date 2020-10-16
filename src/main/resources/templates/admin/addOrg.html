@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj nową fundację</title>
+</head>
+<body>
+<div class="container">
+    <h2>Dodaj fundację</h2>
+
+    <form th:object="${org}" th:action="@{/admin/doAddOrg}" method="post">
+
+        <label>Nazwa fundacji:</label>
+        <br>
+        <input type="text" th:field="*{name}" required="required" />
+        <br>
+        <label>Opis:</label>
+        <br>
+        <textarea th:field="*{description}" required="required" />
+        <br>
+        <button type="submit">Dodaj</button>
+        <button onclick="location.href='/index'" type="button">Anuluj</button>
+    </form>
+</div>
+</body>
+</html>
