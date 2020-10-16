@@ -25,4 +25,8 @@ public class DonationDetailsService {
     public Integer getNumberOfDonations(){
         return detailsRepository.findAll().size();
     }
+
+    public DetailsRepository getDetailsRepository(){
+        return detailsRepository;
+    }
 }

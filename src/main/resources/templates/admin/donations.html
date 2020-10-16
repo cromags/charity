@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even){background-color: #f2f2f2}
+
+        th {
+            background-color: #f9c910;
+            color: white;
+        }
+    </style>
+
+</head>
+<body>
+<h2>Dary (<span th:text="${donations.size()}"></span>)</h2>
+<table>
+    <tr>
+        <th>Adres darczyńcy</th>
+        <th>Data odbioru</th>
+        <th>Godzina odbioru</th>
+        <th>Dar</th>
+        <th>Organizacja</th>
+        <th>Całkowita liczba worków</th>
+        <th>Uwagi</th>
+    </tr>
+    <tr th:each="don : ${donations}">
+<!--        address-->
+        <td th:utext="${'<strong>' + don.zipCode+ ' ' +don.city + '</strong></br>' + don.address + '</br>' + don.tel}"></td>
+<!--        date-->
+        <td th:text="${don.pickUpDate}"></td>
+<!--        time-->
+        <span th:if="${don.pickUpTime} == null ">
+            <td>nie podano</td>
+        </span>
+        <span th:if="${don.pickUpTime} != null ">
+            <td th:text="${don.pickUpTime}"></td>
+        </span>
+<!--        donations-->
+        <td></td>
+<!--        organization-->
+        <td th:text="${don.organization.name}"></td>
+<!--        bags-->
+        <td></td>
+<!--        comments-->
+        <td th:text="${don.comments}"></td>
+    </tr>
+</table>
+<br>
+<button onclick="location.href='/index'" type="button" class="btn btn-default">Powrót</button>
+</body>
+</html>

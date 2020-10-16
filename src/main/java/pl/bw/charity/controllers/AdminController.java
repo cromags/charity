@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pl.bw.charity.domain.model.Organization;
+import pl.bw.charity.domain.repository.DetailsRepository;
+import pl.bw.charity.domain.repository.DonationRepository;
 import pl.bw.charity.domain.repository.OrganizationRepository;
+import pl.bw.charity.service.DonationDetailsService;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -17,9 +20,16 @@ import java.util.Optional;
 public class AdminController {
 
     private final OrganizationRepository organizationRepository;
+    private final DonationRepository donationRepository;
+    private final DetailsRepository detailsRepository;
 
-    public AdminController(OrganizationRepository organizationRepository) {
+
+    public AdminController(OrganizationRepository organizationRepository,
+                           DonationRepository donationRepository,
+                           DetailsRepository detailsRepository) {
         this.organizationRepository = organizationRepository;
+        this.donationRepository = donationRepository;
+        this.detailsRepository = detailsRepository;
     }
 
     @RequestMapping(value = "/organizations")
@@ -48,11 +58,21 @@ public class AdminController {
 
     @RequestMapping(value = "/doAddOrg", method = RequestMethod.POST)
     public String doAddOrg(@Valid Organization organization, BindingResult bindingResult) {
-        System.out.println("jestem tu!!");
         if (bindingResult.hasErrors()) {
             return "redirect:/addOrg";
         }
         organizationRepository.save(organization);
         return "redirect:/index";
+    }
+
+    @RequestMapping(value = "/donations")
+    public String donationsPage(Model model) {
+        model.addAttribute("donations", donationRepository.findAll());
+
+
+
+
+
+        return "admin/donations";
     }
 }
