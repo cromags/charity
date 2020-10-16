@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even){background-color: #f2f2f2}
+
+        th {
+            background-color: #f9c910;
+            color: white;
+        }
+    </style>
+
+</head>
+<body>
+<h2>Fundacje (<span th:text="${orgs.size()}"></span>)</h2>
+<table>
+    <tr>
+        <th>Fundacja</th>
+        <th>Opis</th>
+    </tr>
+    <tr th:each="org : ${orgs}">
+        <td th:text="${org.name}"></td>
+        <td th:text="${org.description}"></td>
+
+        <td>
+            <a th:href="@{/admin/deleteOrg/__${org.id}__}">Usuń</a>
+        </td>
+    </tr>
+</table>
+<br>
+<button onclick="location.href='/index'" type="button" class="btn btn-default">Powrót</button>
+</body>
+</html>
