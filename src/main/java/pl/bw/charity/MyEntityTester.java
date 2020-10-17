@@ -5,9 +5,11 @@ import org.springframework.stereotype.Component;
 import pl.bw.charity.domain.model.Donation;
 import pl.bw.charity.domain.model.Good;
 import pl.bw.charity.domain.model.Organization;
+import pl.bw.charity.domain.model.Status;
 import pl.bw.charity.domain.repository.DonationRepository;
 import pl.bw.charity.domain.repository.GoodRepository;
 import pl.bw.charity.domain.repository.OrganizationRepository;
+import pl.bw.charity.domain.repository.StatusRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -18,13 +20,16 @@ public class MyEntityTester implements CommandLineRunner {
     private final OrganizationRepository organizationRepository;
     private final DonationRepository donationRepository;
     private final GoodRepository goodRepository;
+    private final StatusRepository statusRepository;
 
     public MyEntityTester(OrganizationRepository organizationRepository,
                           DonationRepository donationRepository,
-                          GoodRepository goodRepository){
+                          GoodRepository goodRepository,
+                          StatusRepository statusRepository){
         this.organizationRepository = organizationRepository;
         this.donationRepository = donationRepository;
         this.goodRepository = goodRepository;
+        this.statusRepository = statusRepository;
     }
 
     @Override
@@ -40,6 +45,18 @@ public class MyEntityTester implements CommandLineRunner {
 
         for (Organization o : orgs){
             organizationRepository.save(o);
+        }
+
+        Status[] stats = new Status[]{
+                new Status("placed", "Złożone"),
+                new Status("orderedCourier", "Zamówiono kuriera"),
+                new Status("inStock", "Na magazynie"),
+                new Status("sent", "Wysłano do fundacji"),
+                new Status("delivered", "Dostarczono")
+        };
+
+        for (Status s : stats){
+            statusRepository.save(s);
         }
 
 

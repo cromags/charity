@@ -8,17 +8,17 @@
         table {
             border-collapse: collapse;
             width: 100%;
+
         }
 
         th, td {
             text-align: left;
             padding: 8px;
+            border: 1px solid black;
         }
 
-        tr:nth-child(even){background-color: #f2f2f2}
-
         th {
-            background-color: #f9c910;
+            background-color: black;
             color: white;
         }
     </style>
@@ -42,20 +42,33 @@
 <!--        date-->
         <td th:text="${don.pickUpDate}"></td>
 <!--        time-->
-        <span th:if="${don.pickUpTime} == null ">
-            <td>nie podano</td>
-        </span>
-        <span th:if="${don.pickUpTime} != null ">
-            <td th:text="${don.pickUpTime}"></td>
-        </span>
+        <td th:if="${don.pickUpTime} == null" >nie podano</td>
+
+        <td th:if="${don.pickUpTime} != null" th:text="${don.pickUpTime}"></td>
 <!--        donations-->
-        <td></td>
+        <td>
+            <ul >
+                <li th:each="dd: ${don.donationDetails}" >
+                    <span th:text="${dd.good.name + ' (' + dd.quantity + 'w)'}" ></span>
+                </li>
+            </ul>
+        </td>
 <!--        organization-->
         <td th:text="${don.organization.name}"></td>
 <!--        bags-->
         <td></td>
 <!--        comments-->
         <td th:text="${don.comments}"></td>
+<!--      change status-->
+        <td>
+            <form th:action="@{changeStatus/__${don.id}__}" method="post">
+                <select th:field="*{donat.status}"  >
+                    <option selected value="0">nie wybrano</option>
+                    <option th:each="status : ${stats}" th:value="${status.id}" th:text="${status.name}"></option>
+                </select>
+                <input type="submit" value="Zmień status">
+            </form>
+        </td>
     </tr>
 </table>
 <br>

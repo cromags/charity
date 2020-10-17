@@ -9,6 +9,7 @@ import pl.bw.charity.domain.model.DonationDetails;
 import pl.bw.charity.domain.model.Organization;
 import pl.bw.charity.domain.repository.DetailsRepository;
 import pl.bw.charity.domain.repository.DonationRepository;
+import pl.bw.charity.domain.repository.StatusRepository;
 import pl.bw.charity.service.GoodService;
 import pl.bw.charity.service.OrganizationService;
 
@@ -27,15 +28,19 @@ public class DonationController {
     private final OrganizationService organizationService;
     private final DonationRepository donationRepository;
     private final DetailsRepository detailsRepository;
+    private final StatusRepository statusRepository;
 
     public DonationController(GoodService goodService,
                               OrganizationService organizationService,
                               DonationRepository donationRepository,
-                              DetailsRepository detailsRepository) {
+                              DetailsRepository detailsRepository,
+                              StatusRepository statusRepository) {
+
         this.goodService = goodService;
         this.organizationService = organizationService;
         this.donationRepository = donationRepository;
         this.detailsRepository = detailsRepository;
+        this.statusRepository = statusRepository;
     }
 
     @RequestMapping(value = "/step1")
@@ -123,6 +128,8 @@ public class DonationController {
         Donation donation = (Donation) session.getAttribute("donation");
 
         donation.setOrganization(organization);
+        //set new donation status to -> placed donation status
+        donation.setStatus(statusRepository.findById(1L).orElse(null));
         donationRepository.save(donation);
 
         for (DonationDetails dd : detailsList){
@@ -130,10 +137,10 @@ public class DonationController {
             detailsRepository.save(dd);
         }
 
-        //clear session
-        if (session != null) {
-            session.invalidate();
-        }
+        session.removeAttribute("donation");
+        session.removeAttribute("organization");
+        session.removeAttribute("detailsList");
+
 
         return "thankyou";
     }
@@ -142,9 +149,10 @@ public class DonationController {
     public ModelAndView cancel(HttpServletRequest request){
 
         HttpSession session = request.getSession();
-        if (session != null) {
-            session.invalidate();
-        }
+
+        session.removeAttribute("donation");
+        session.removeAttribute("organization");
+        session.removeAttribute("detailsList");
 
         return new ModelAndView("redirect:/user/step1");
     }
