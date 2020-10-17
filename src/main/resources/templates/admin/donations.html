@@ -38,15 +38,15 @@
     </tr>
     <tr th:each="don : ${donations}">
 <!--        address-->
-        <td th:utext="${'<strong>' + don.zipCode+ ' ' +don.city + '</strong></br>' + don.address + '</br>' + don.tel}"></td>
+        <td th:style = "${don.status.id >= 2 } ? 'background: #f9c910' : 'background: white'"  th:utext="${'<strong>' + don.zipCode+ ' ' +don.city + '</strong></br>' + don.address + '</br>' + don.tel}"></td>
 <!--        date-->
-        <td th:text="${don.pickUpDate}"></td>
+        <td th:style = "${don.status.id >= 2 } ? 'background: #f9c910' : 'background: white'" th:text="${don.pickUpDate}"></td>
 <!--        time-->
-        <td th:if="${don.pickUpTime} == null" >nie podano</td>
+        <td th:style = "${don.status.id >= 2 } ? 'background: #f9c910' : 'background: white'" th:if="${don.pickUpTime} == null" >nie podano</td>
 
-        <td th:if="${don.pickUpTime} != null" th:text="${don.pickUpTime}"></td>
+        <td th:style = "${don.status.id >= 2 } ? 'background: #f9c910' : 'background: white'" th:if="${don.pickUpTime} != null" th:text="${don.pickUpTime}"></td>
 <!--        donations-->
-        <td>
+        <td th:style = "${don.status.id >= 3 } ? 'background: #f9c910' : 'background: white'" >
             <ul >
                 <li th:each="dd: ${don.donationDetails}" >
                     <span th:text="${dd.good.name + ' (' + dd.quantity + 'w)'}" ></span>
@@ -54,18 +54,20 @@
             </ul>
         </td>
 <!--        organization-->
-        <td th:text="${don.organization.name}"></td>
+        <td th:style = "${don.status.id >= 4 } ? 'background: #f9c910' : 'background: white'"  th:text="${don.organization.name}"></td>
 <!--        bags-->
-        <td></td>
+        <td th:style = "${don.status.id >= 5 } ? 'background: #f9c910' : 'background: white'" ></td>
 <!--        comments-->
-        <td th:text="${don.comments}"></td>
+        <td th:style = "${don.status.id >= 5 } ? 'background: #f9c910' : 'background: white'" th:text="${don.comments}"></td>
 <!--      change status-->
         <td>
             <form th:action="@{changeStatus/__${don.id}__}" method="post">
                 <select th:field="*{donat.status}"  >
-                    <option selected value="0">nie wybrano</option>
+<!--                    <option selected value="0">wybierz z listy</option>-->
+                    <option selected value="0" th:text="${don.status.name}" th:style="'color:red'" >wybierz z listy</option>
                     <option th:each="status : ${stats}" th:value="${status.id}" th:text="${status.name}"></option>
                 </select>
+                <br>
                 <input type="submit" value="Zmień status">
             </form>
         </td>

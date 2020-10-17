@@ -12,7 +12,6 @@ public class Status {
     private Long id;
 
     private String name;
-    private String code;
     @OneToMany
     @JoinColumn(name = "status_id")
     Set<Donation> donations = new HashSet<>();
@@ -20,8 +19,7 @@ public class Status {
     public Status() {
     }
 
-    public Status(String code, String name) {
-        this.code = code;
+    public Status(String name) {
         this.name = name;
     }
 
@@ -39,14 +37,6 @@ public class Status {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public Set<Donation> getDonations() {

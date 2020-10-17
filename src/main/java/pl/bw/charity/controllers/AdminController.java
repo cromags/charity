@@ -90,7 +90,7 @@ public class AdminController {
         donation.setStatus(hereIsNewStatus.getStatus());
         donationRepository.save(donation);
 
-        return "redirect:/index";
+        return "redirect:/admin/donations";
 
     }
 
