@@ -34,6 +34,9 @@ public class Donation {
     @ManyToOne
     private Status status;
 
+    @ManyToOne
+    private Courier courier;
+
     @OneToMany
     @JoinColumn(name = "donation_id")
     Set<DonationDetails> donationDetails = new HashSet<>();
@@ -41,7 +44,7 @@ public class Donation {
     public Donation() {
     }
 
-    public Donation(String zipCode, String city, String address, String tel, LocalDate pickUpDate, LocalTime pickUpTime, String comments, Organization organization, Status status) {
+    public Donation(String zipCode, String city, String address, String tel, LocalDate pickUpDate, LocalTime pickUpTime, String comments, Organization organization, Status status, Courier courier) {
         this.zipCode = zipCode;
         this.city = city;
         this.address = address;
@@ -51,6 +54,7 @@ public class Donation {
         this.comments = comments;
         this.organization = organization;
         this.status = status;
+        this.courier = courier;
     }
 
     public Long getId() {
@@ -131,6 +135,14 @@ public class Donation {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Courier getCourier() {
+        return courier;
+    }
+
+    public void setCourier(Courier courier) {
+        this.courier = courier;
     }
 
     public Set<DonationDetails> getDonationDetails() {

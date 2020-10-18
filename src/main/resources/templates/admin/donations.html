@@ -31,34 +31,34 @@
         <th>Adres darczyńcy</th>
         <th>Data odbioru</th>
         <th>Godzina odbioru</th>
-        <th>Dar</th>
+        <th>Dar (worków)</th>
         <th>Organizacja</th>
         <th>Całkowita liczba worków</th>
         <th>Uwagi</th>
     </tr>
     <tr th:each="don : ${donations}">
 <!--        address-->
-        <td th:style = "${don.status.id >= 2 } ? 'background: #f9c910' : 'background: white'"  th:utext="${'<strong>' + don.zipCode+ ' ' +don.city + '</strong></br>' + don.address + '</br>' + don.tel}"></td>
+        <td th:style = "${don.status.id >= 2 } ? 'background:'+${don.courier.colour} : 'background: white'"  th:utext="${'<strong>' + don.zipCode+ ' ' +don.city + '</strong></br>' + don.address + '</br>' + don.tel}"></td>
 <!--        date-->
-        <td th:style = "${don.status.id >= 2 } ? 'background: #f9c910' : 'background: white'" th:text="${don.pickUpDate}"></td>
+        <td th:style = "${don.status.id >= 2 } ? 'background:'+${don.courier.colour} : 'background: white'" th:text="${don.pickUpDate}"></td>
 <!--        time-->
-        <td th:style = "${don.status.id >= 2 } ? 'background: #f9c910' : 'background: white'" th:if="${don.pickUpTime} == null" >nie podano</td>
+        <td th:style = "${don.status.id >= 2 } ? 'background:'+${don.courier.colour} : 'background: white'" th:if="${don.pickUpTime} == null" >nie podano</td>
 
-        <td th:style = "${don.status.id >= 2 } ? 'background: #f9c910' : 'background: white'" th:if="${don.pickUpTime} != null" th:text="${don.pickUpTime}"></td>
+        <td th:style = "${don.status.id >= 2 } ? 'background:'+${don.courier.colour} : 'background: white'" th:if="${don.pickUpTime} != null" th:text="${don.pickUpTime}"></td>
 <!--        donations-->
-        <td th:style = "${don.status.id >= 3 } ? 'background: #f9c910' : 'background: white'" >
+        <td th:style = "${don.status.id >= 3 } ? 'background:'+${don.courier.colour} : 'background: white'" >
             <ul >
                 <li th:each="dd: ${don.donationDetails}" >
-                    <span th:text="${dd.good.name + ' (' + dd.quantity + 'w)'}" ></span>
+                    <span th:text="${dd.good.name + ' (' + dd.quantity + ')'}" ></span>
                 </li>
             </ul>
         </td>
 <!--        organization-->
-        <td th:style = "${don.status.id >= 4 } ? 'background: #f9c910' : 'background: white'"  th:text="${don.organization.name}"></td>
+        <td th:style = "${don.status.id >= 4 } ? 'background:'+${don.courier.colour} : 'background: white'"  th:text="${don.organization.name}"></td>
 <!--        bags-->
-        <td th:style = "${don.status.id >= 5 } ? 'background: #f9c910' : 'background: white'" th:text="${b.next()}" ></td>
+        <td th:style = "${don.status.id >= 5 } ? 'background:'+${don.courier.colour} : 'background: white'" th:text="${b.next()}" ></td>
 <!--        comments-->
-        <td th:style = "${don.status.id >= 5 } ? 'background: #f9c910' : 'background: white'" th:text="${don.comments}"></td>
+        <td th:style = "${don.status.id >= 5 } ? 'background:'+${don.courier.colour} : 'background: white'" th:text="${don.comments}"></td>
 <!--      change status-->
         <td>
             <form th:action="@{changeStatus/__${don.id}__}" method="post">
@@ -68,6 +68,17 @@
                 </select>
                 <br>
                 <input type="submit" value="Zmień status">
+            </form>
+        </td>
+<!--         assign courier-->
+        <td>
+            <form th:action="@{courierAssigning/__${don.id}__}" method="post">
+                <select th:field="*{donat.courier}" >
+                    <option selected value="0" th:text="${don.courier.courierName}" th:style="'color:red'" >wybierz z listy</option>
+                    <option th:each="courier : ${couriers}" th:value="${courier.id}" th:text="${courier.courierName}"></option>
+                </select>
+                <br>
+                <input type="submit" value="Przypisz kuriera">
             </form>
         </td>
     </tr>

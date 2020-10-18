@@ -7,14 +7,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import pl.bw.charity.domain.model.Donation;
-import pl.bw.charity.domain.model.DonationDetails;
-import pl.bw.charity.domain.model.Organization;
-import pl.bw.charity.domain.model.Status;
-import pl.bw.charity.domain.repository.DetailsRepository;
-import pl.bw.charity.domain.repository.DonationRepository;
-import pl.bw.charity.domain.repository.OrganizationRepository;
-import pl.bw.charity.domain.repository.StatusRepository;
+import pl.bw.charity.domain.model.*;
+import pl.bw.charity.domain.repository.*;
 import pl.bw.charity.service.DonationDetailsService;
 
 import javax.validation.Valid;
@@ -29,16 +23,19 @@ public class AdminController {
     private final DonationRepository donationRepository;
     private final DetailsRepository detailsRepository;
     private final StatusRepository statusRepository;
+    private final CourierRepository courierRepository;
 
 
     public AdminController(OrganizationRepository organizationRepository,
                            DonationRepository donationRepository,
                            DetailsRepository detailsRepository,
-                           StatusRepository statusRepository) {
+                           StatusRepository statusRepository,
+                           CourierRepository courierRepository) {
         this.organizationRepository = organizationRepository;
         this.donationRepository = donationRepository;
         this.detailsRepository = detailsRepository;
         this.statusRepository = statusRepository;
+        this.courierRepository = courierRepository;
     }
 
     @RequestMapping(value = "/organizations")
@@ -78,9 +75,9 @@ public class AdminController {
     public String donationsPage(Model model) {
         model.addAttribute("donations", donationRepository.findAll());
         model.addAttribute("donat", new Donation());
-        model.addAttribute("stats", statusRepository.findAll());
         model.addAttribute("bags", detailsRepository.getBagsForEachDonation());
-
+        model.addAttribute("stats", statusRepository.findAll());
+        model.addAttribute("couriers", courierRepository.findAll());
         return "admin/donations";
     }
 
@@ -95,6 +92,23 @@ public class AdminController {
         Optional<Donation> from = donationRepository.findById(id);
         Donation donation = from.orElse(null);
         donation.setStatus(hereIsNewStatus.getStatus());
+        donationRepository.save(donation);
+
+        return "redirect:/admin/donations";
+
+    }
+
+    @RequestMapping(value = "/courierAssigning/{id}")
+    public String assignCourier(@PathVariable Long id, @ModelAttribute("donat") Donation hereIsACourier) {
+
+        //in case where user clicked 'selected' item
+        if(hereIsACourier.getCourier() == null){
+            return "redirect:/admin/donations";
+        }
+
+        Optional<Donation> from = donationRepository.findById(id);
+        Donation donation = from.orElse(null);
+        donation.setCourier(hereIsACourier.getCourier());
         donationRepository.save(donation);
 
         return "redirect:/admin/donations";

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DetailsRepository extends JpaRepository<DonationDetails, Long> {
 
-    @Query("select sum(dd.quantity) from DonationDetails dd group by dd.donation.id")
+    @Query("select sum(dd.quantity) from DonationDetails dd group by dd.donation.id order by dd.donation.id asc")
     List<Integer> getBagsForEachDonation();
 
 }
