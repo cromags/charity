@@ -62,8 +62,7 @@
 <!--      change status-->
         <td>
             <form th:action="@{changeStatus/__${don.id}__}" method="post">
-                <select th:field="*{donat.status}"  >
-<!--                    <option selected value="0">wybierz z listy</option>-->
+                <select th:field="*{donat.status}" >
                     <option selected value="0" th:text="${don.status.name}" th:style="'color:red'" >wybierz z listy</option>
                     <option th:each="status : ${stats}" th:value="${status.id}" th:text="${status.name}"></option>
                 </select>

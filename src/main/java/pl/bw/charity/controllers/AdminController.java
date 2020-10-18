@@ -85,6 +85,11 @@ public class AdminController {
     @RequestMapping(value = "/changeStatus/{id}")
     public String changeStatus(@PathVariable Long id, @ModelAttribute("donat") Donation hereIsNewStatus) {
 
+        //in case where user clicked 'selected' item
+        if(hereIsNewStatus.getStatus() == null){
+            return "redirect:/admin/donations";
+        }
+
         Optional<Donation> from = donationRepository.findById(id);
         Donation donation = from.orElse(null);
         donation.setStatus(hereIsNewStatus.getStatus());
