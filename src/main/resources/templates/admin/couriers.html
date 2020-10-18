@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even){background-color: #f2f2f2}
+
+        th {
+            background-color: #f9c910;
+            color: white;
+        }
+    </style>
+
+</head>
+<body>
+<h2>Kurierzy (<span th:text="${couriers.size()}"></span>)</h2>
+<table>
+    <tr>
+        <th>Nazwa</th>
+        <th>email</th>
+        <th>www</th>
+        <th>tel</th>
+    </tr>
+    <tr th:each="courier : ${couriers}">
+        <td th:text="${courier.courierName}"></td>
+        <td><a th:href="@{mailto:__${courier.email}__}"><span th:text="${courier.email}"></span></a></td>
+        <td><a th:href="@{//__${courier.www}__}"><span th:text="${courier.www}"></span></a></td>
+        <td th:text="${courier.tel}"></td>
+
+        <td>
+            <a th:href="@{/admin/deleteCourier/__${courier.id}__}">Usuń</a>
+            <a th:href="@{/admin/editCourier/__${courier.id}__}">Edytuj</a>
+        </td>
+    </tr>
+</table>
+<br>
+<button onclick="location.href='/index'" type="button" >Powrót</button>
+<button onclick="location.href='/admin/addCourier'" type="button" >Dodaj nowego</button>
+
+</body>
+</html>

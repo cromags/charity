@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj nowego kuriera</title>
+</head>
+<body>
+<div class="container">
+    <h2>Dodaj kuriera</h2>
+
+    <form th:object="${courier}" th:action="@{/admin/doAddCourier}" method="post">
+
+        <label>Nazwa:</label>
+        <br>
+        <input type="text" th:field="*{courierName}" required="required" />
+        <br>
+        <label>Email:</label>
+        <br>
+        <input type="text" pattern="^\S+@\S+$" title="Prawidłowy format np. xyz@wp.pl" th:field="*{email}" />
+        <br>
+        <label>Tel:</label>
+        <br>
+        <input type="text" th:field="*{tel}" />
+        <br>
+        <label>www:</label>
+        <br>
+        <input type="text" pattern="[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)" title="Prawidłowy format np. onet.pl"  th:field="*{www}" />
+        <br>
+        <label>Przypisz kolor:</label>
+        <input type="color" th:field="*{colour}" >
+        <br>
+        <button type="submit">Dodaj</button>
+        <button onclick="location.href='/index'" type="button">Anuluj</button>
+    </form>
+</div>
+</body>
+</html>

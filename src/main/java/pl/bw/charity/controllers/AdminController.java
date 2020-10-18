@@ -50,6 +50,7 @@ public class AdminController {
         Optional<Organization> from = organizationRepository.findById(id);
         Organization org = from.orElse(null);
         if (org == null) {
+            model.addAttribute("input","takiej fundacji");
             return "err/notfound";
         }
         organizationRepository.delete(org);
@@ -113,6 +114,73 @@ public class AdminController {
 
         return "redirect:/admin/donations";
 
+    }
+
+    @RequestMapping(value = "/couriers")
+    public String couriersPage(Model model) {
+        model.addAttribute("couriers", courierRepository.findAll());
+        return "admin/couriers";
+    }
+
+    @RequestMapping(value = "/deleteCourier/{id}")
+    public String delCourier(@PathVariable Long id, Model model) {
+
+        Optional<Courier> from = courierRepository.findById(id);
+        Courier courier = from.orElse(null);
+        if (courier == null) {
+            model.addAttribute("input","takiego kuriera");
+            return "err/notfound";
+        }
+
+        List<Donation> donations =  donationRepository.findAll();
+        for (int i = 0; i < donations.size(); i++){
+            if(donations.get(i).getCourier().getId() == courier.getId()){
+                model.addAttribute("courierName",courier.getCourierName());
+                return "err/cannotdelete";
+            }
+        }
+
+        courierRepository.delete(courier);
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = "/addCourier")
+    public String addCourier(Model model) {
+        model.addAttribute("courier", new Courier());
+        return "admin/addCourier";
+    }
+
+    @RequestMapping(value = "/doAddCourier", method = RequestMethod.POST)
+    public String processAddClient(@Valid Courier courier, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "admin/addCourier";
+        }
+        courierRepository.save(courier);
+        return "redirect:/admin/couriers";
+    }
+
+    @RequestMapping(value = "/editCourier/{id}")
+    public String editCourierPage(@PathVariable Long id, Model model) {
+        model.addAttribute("courier", courierRepository.findById(id));
+        return "admin/editCourier";
+
+    }
+
+    @RequestMapping(value = "/doEditCourier", method = RequestMethod.POST)
+    public String doEdit(@Valid Courier courier, BindingResult bindingResult) {
+        Optional<Courier> from = courierRepository.findById(courier.getId());
+        Courier c = from.orElse(null);
+        if (bindingResult.hasErrors() || c == null) {
+            return "admin/editCourier";
+        }
+
+        c.setCourierName(courier.getCourierName());
+        c.setEmail(courier.getEmail());
+        c.setWww(courier.getWww());
+        c.setTel(courier.getTel());
+        c.setColour(courier.getColour());
+        courierRepository.save(c);
+        return "redirect:/admin/couriers";
     }
 
 }
