@@ -37,10 +37,12 @@
 
         <td>
             <a th:href="@{/admin/deleteOrg/__${org.id}__}">Usuń</a>
+            <a th:href="@{/admin/editOrg/__${org.id}__}">Edytuj</a>
         </td>
     </tr>
 </table>
 <br>
 <button onclick="location.href='/index'" type="button" >Powrót</button>
+<button onclick="location.href='/admin/addOrg'" type="button" >Dodaj nową</button>
 </body>
 </html>

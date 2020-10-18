@@ -53,6 +53,15 @@ public class AdminController {
             model.addAttribute("input","takiej fundacji");
             return "err/notfound";
         }
+
+        List<Donation> donations =  donationRepository.findAll();
+        for (int i = 0; i < donations.size(); i++){
+            if(donations.get(i).getOrganization().getId() == org.getId()){
+                model.addAttribute("input"," fundacji " + org.getName() + " ponieważ mamy dla niej nieprzekazane dary!");
+                return "err/cannotdelete";
+            }
+        }
+
         organizationRepository.delete(org);
         return "redirect:/";
     }
@@ -70,6 +79,34 @@ public class AdminController {
         }
         organizationRepository.save(organization);
         return "redirect:/index";
+    }
+
+    @RequestMapping(value = "/editOrg/{id}")
+    public String editOrgPage(@PathVariable Long id, Model model) {
+        Optional<Organization> from = organizationRepository.findById(id);
+        Organization org = from.orElse(null);
+        if (org == null) {
+            model.addAttribute("input","takiej organizacji");
+            return "err/notfound";
+        }
+        model.addAttribute("org", org);
+
+        return "admin/editOrg";
+
+    }
+
+    @RequestMapping(value = "/doEditOrg", method = RequestMethod.POST)
+    public String doEdit(@Valid Organization organization, BindingResult bindingResult) {
+        Optional<Organization> from = organizationRepository.findById(organization.getId());
+        Organization o = from.orElse(null);
+        if (bindingResult.hasErrors() || o == null) {
+            return "admin/editOrg";
+        }
+
+        o.setName(organization.getName());
+        o.setDescription(organization.getDescription());
+        organizationRepository.save(o);
+        return "redirect:/admin/organizations";
     }
 
     @RequestMapping(value = "/donations")
@@ -135,7 +172,7 @@ public class AdminController {
         List<Donation> donations =  donationRepository.findAll();
         for (int i = 0; i < donations.size(); i++){
             if(donations.get(i).getCourier().getId() == courier.getId()){
-                model.addAttribute("courierName",courier.getCourierName());
+                model.addAttribute("input"," kuriera " + courier.getCourierName() + " ponieważ ma niezrealizowane zlecenia!");
                 return "err/cannotdelete";
             }
         }
@@ -161,8 +198,16 @@ public class AdminController {
 
     @RequestMapping(value = "/editCourier/{id}")
     public String editCourierPage(@PathVariable Long id, Model model) {
-        model.addAttribute("courier", courierRepository.findById(id));
+        Optional<Courier> from = courierRepository.findById(id);
+        Courier c = from.orElse(null);
+        if (c == null) {
+            model.addAttribute("input","takiego kuriera");
+            return "err/notfound";
+        }
+        model.addAttribute("courier", c);
+
         return "admin/editCourier";
+
 
     }
 
