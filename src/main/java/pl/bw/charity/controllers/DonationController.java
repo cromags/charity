@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import pl.bw.charity.domain.model.Donation;
 import pl.bw.charity.domain.model.DonationDetails;
 import pl.bw.charity.domain.model.Organization;
+import pl.bw.charity.domain.repository.CourierRepository;
 import pl.bw.charity.domain.repository.DetailsRepository;
 import pl.bw.charity.domain.repository.DonationRepository;
 import pl.bw.charity.domain.repository.StatusRepository;
@@ -15,10 +16,7 @@ import pl.bw.charity.service.OrganizationService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/user")
@@ -29,18 +27,21 @@ public class DonationController {
     private final DonationRepository donationRepository;
     private final DetailsRepository detailsRepository;
     private final StatusRepository statusRepository;
+    private final CourierRepository courierRepository;
 
     public DonationController(GoodService goodService,
                               OrganizationService organizationService,
                               DonationRepository donationRepository,
                               DetailsRepository detailsRepository,
-                              StatusRepository statusRepository) {
+                              StatusRepository statusRepository,
+                              CourierRepository courierRepository) {
 
         this.goodService = goodService;
         this.organizationService = organizationService;
         this.donationRepository = donationRepository;
         this.detailsRepository = detailsRepository;
         this.statusRepository = statusRepository;
+        this.courierRepository = courierRepository;
     }
 
     @RequestMapping(value = "/step1")
@@ -128,8 +129,10 @@ public class DonationController {
         Donation donation = (Donation) session.getAttribute("donation");
 
         donation.setOrganization(organization);
-        //set new donation status to -> placed donation status
+        //set new donation status to default => placed
         donation.setStatus(statusRepository.findById(1L).orElse(null));
+        //set new donation courier to default => CharityTransport
+        donation.setCourier(courierRepository.findById(1L).orElse(null));
         donationRepository.save(donation);
 
         for (DonationDetails dd : detailsList){
