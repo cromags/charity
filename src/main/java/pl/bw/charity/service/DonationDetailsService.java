@@ -5,6 +5,8 @@ import pl.bw.charity.domain.model.DonationDetails;
 import pl.bw.charity.domain.repository.DetailsRepository;
 import pl.bw.charity.domain.repository.DonationRepository;
 
+import java.util.List;
+
 @Service
 public class DonationDetailsService {
 
@@ -26,7 +28,4 @@ public class DonationDetailsService {
         return detailsRepository.findAll().size();
     }
 
-    public DetailsRepository getDetailsRepository(){
-        return detailsRepository;
-    }
 }

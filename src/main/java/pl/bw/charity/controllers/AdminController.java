@@ -18,6 +18,7 @@ import pl.bw.charity.domain.repository.StatusRepository;
 import pl.bw.charity.service.DonationDetailsService;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -78,6 +79,7 @@ public class AdminController {
         model.addAttribute("donations", donationRepository.findAll());
         model.addAttribute("donat", new Donation());
         model.addAttribute("stats", statusRepository.findAll());
+        model.addAttribute("bags", detailsRepository.getBagsForEachDonation());
 
         return "admin/donations";
     }
