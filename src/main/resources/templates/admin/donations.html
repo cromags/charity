@@ -36,7 +36,7 @@
         <th>Całkowita liczba worków</th>
         <th>Uwagi</th>
     </tr>
-    <tr th:each="don : ${donations}">
+    <tr th:each="don : ${donations}" >
 <!--        address-->
         <td th:style = "${don.status.id >= 2 } ? 'background:'+${don.courier.colour} : 'background: white'"  th:utext="${'<strong>' + don.zipCode+ ' ' +don.city + '</strong></br>' + don.address + '</br>' + don.tel}"></td>
 <!--        date-->
